@@ -30,3 +30,6 @@ class Goblin(Monsters):
             dice = self.roll_dice(6)
             value = winner.power * Monsters.value_weapons[winner.weapon]
             looser.hp -= value + dice
+
+
+

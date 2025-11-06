@@ -1,25 +1,26 @@
 import random
-
 import core.player
 import core.orc
 import core.goblin
 
 class Game:
+    def __init__(self):
+        self.won = None
 
 
     def start(self):
         player = self.create_player()
         play = self.show_menu()
-        while play == "P":
+        if play == "p":
             monster = self.choose_random_monster()
+            player.speak()
+            monster.speak()
             state = self.battle(player, monster)
+            print(f"Winner is {self.won}")
 
 
     def show_menu(self):
         play = input("Do you want to play? press 'p' for play, or 'e' to exit")
-        while play != "P" or play != "E":
-            play = input("Do you want to play? press 'p' for play, or 'e' to exit")
-            play = play.capitalize()
         return play
 
 
@@ -44,20 +45,26 @@ class Game:
         while not won:
             attack = current_player.attack(current_player, other)
             if attack:
-                won = self.is_won(current_player, other)
+                self.won = self.is_won(current_player, other)
                 temp = current_player
                 current_player = other
                 other = temp
             else:
+                self.won = self.is_won(current_player, other)
                 temp = current_player
                 current_player = other
                 other = temp
+
 
 
     def battle(self, player, monster):
         dice_player = self.roll_dice(6)
         dice_monster = self.roll_dice(6)
-        if dice_player + player.speed + dice_monster + monster.speed or dice_monster == dice_player:
+        player_speed = player.speed
+        monster_speed = monster.speed
+        player_state = player_speed + dice_player
+        monster_state = monster_speed + dice_monster
+        if player_state> monster_state or dice_monster == dice_player:
             self.organizer_battle(player, monster)
         else:
             self.organizer_battle(monster, player)
