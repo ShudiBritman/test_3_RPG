@@ -53,6 +53,7 @@ class Game:
                 current_player = other
                 other = temp
 
+
     def battle(self, player, monster):
         dice_player = self.roll_dice(6)
         dice_monster = self.roll_dice(6)
