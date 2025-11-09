@@ -1,6 +1,6 @@
 import random
 
-import game
+from .player import Player
 from .monsters import Monsters
 
 
@@ -18,9 +18,9 @@ class Orc(Monsters):
         super().speak()
 
     def attack(self, player, monster):
-        speed = game.Game.roll_dice(20)
-        speed += player.speed
-        if speed > player.armor_ratung:
+        speed = self.roll_dice(20)
+        speed += self.speed
+        if speed > player.armor_rating:
             self.damage_calculator(monster, player)
             return True
         else:
@@ -30,4 +30,9 @@ class Orc(Monsters):
         dice = self.roll_dice(6)
         value = winner.power * Monsters.value_weapons[winner.weapon]
         looser.hp -= value + dice
+
+
+    def roll_dice(self, sides:int):
+        num = random.randint(0, sides)
+        return num
 

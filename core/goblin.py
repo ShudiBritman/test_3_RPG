@@ -1,5 +1,5 @@
 import random
-import game
+from .player import Player
 from core.monsters import Monsters
 
 
@@ -16,20 +16,24 @@ class Goblin(Monsters):
     def speak(self):
         super().speak()
 
-    def attack(self):
-        def attack(self, player, monster):
-            speed = game.Game.roll_dice(20)
-            speed += player.speed
-            if speed > player.armor_ratung:
-                self.damage_calculator(monster, player)
-                return True
-            else:
-                return False
+    def attack(self, player, monster):
+        speed = self.roll_dice(20)
+        speed += self.speed
+        if speed > player.armor_rating:
+            self.damage_calculator(monster, player)
+            return True
+        else:
+            return False
 
-        def damage_calculator(self, winner, looser):
-            dice = self.roll_dice(6)
-            value = winner.power * Monsters.value_weapons[winner.weapon]
-            looser.hp -= value + dice
+    def damage_calculator(self, winner, looser):
+        dice = self.roll_dice(6)
+        value = winner.power * Monsters.value_weapons[winner.weapon]
+        looser.hp -= value + dice
+
+
+    def roll_dice(self, sides:int):
+        num = random.randint(0, sides)
+        return num
 
 
 

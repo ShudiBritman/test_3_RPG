@@ -1,6 +1,5 @@
 import random
 from abc import abstractmethod
-import game
 
 
 class Players:
@@ -9,7 +8,6 @@ class Players:
         self.speed = None
         self.power = None
         self.armor_rating = None
-        num_index = None
         self.profession = None
         self.hp = None
 
@@ -38,9 +36,9 @@ class Player(Players):
         print(f"Hello I'm {self.name}")
 
     def attack(self, player, monster):
-        speed = game.Game.roll_dice(20)
-        speed += player.speed
-        if speed > monster.armor_ratung:
+        speed = self.roll_dice(20)
+        speed += self.speed
+        if speed > monster.armor_rating:
             self.damage_calculator(player, monster)
             return True
         else:
@@ -49,6 +47,12 @@ class Player(Players):
     def damage_calculator(self, winner, looser):
         dice = self.roll_dice(6)
         looser.hp -= winner.power + dice
+
+
+
+    def roll_dice(self, sides:int):
+        num = random.randint(0, sides)
+        return num
 
 
 

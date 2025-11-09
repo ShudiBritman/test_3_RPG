@@ -15,7 +15,7 @@ class Game:
             monster = self.choose_random_monster()
             player.speak()
             monster.speak()
-            state = self.battle(player, monster)
+            self.organizer_battle(player, monster)
             print(f"Winner is {self.won}")
 
 
@@ -25,7 +25,7 @@ class Game:
 
 
     def create_player(self):
-        player = core.player.Player
+        player = core.player.Player()
         return player
 
 
@@ -39,25 +39,9 @@ class Game:
 
         return monster
 
-    def organizer_battle(self, current_player, other):
-        state = 0
-        won = 0
-        while not won:
-            attack = current_player.attack(current_player, other)
-            if attack:
-                self.won = self.is_won(current_player, other)
-                temp = current_player
-                current_player = other
-                other = temp
-            else:
-                self.won = self.is_won(current_player, other)
-                temp = current_player
-                current_player = other
-                other = temp
 
 
-
-    def battle(self, player, monster):
+    def organizer_battle(self, player, monster):
         dice_player = self.roll_dice(6)
         dice_monster = self.roll_dice(6)
         player_speed = player.speed
@@ -65,9 +49,27 @@ class Game:
         player_state = player_speed + dice_player
         monster_state = monster_speed + dice_monster
         if player_state> monster_state or dice_monster == dice_player:
-            self.organizer_battle(player, monster)
+            self.battle(player, monster)
         else:
-            self.organizer_battle(monster, player)
+            self.battle(monster, player)
+
+
+
+    def battle(self, current_player, other):
+        while not self.won:
+            attack = current_player.attack(current_player, other)
+            if attack:
+                self.won = self.is_won(current_player, other)
+                temp = current_player
+                current_player = other
+                other = temp
+                if self.won:
+                    self.won = current_player.name
+            else:
+                temp = current_player
+                current_player = other
+                other = temp
+
 
 
     def is_won(self,attacks, attacked):
@@ -78,5 +80,6 @@ class Game:
 
 
     def roll_dice(self, sides):
-        num = random.randint(0, sides)
+        num = random.randint(1, sides)
+        return num
 
